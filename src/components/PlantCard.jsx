@@ -1,37 +1,36 @@
 import { motion } from 'framer-motion'
-import { Droplets, AlertCircle, CheckCircle2 } from 'lucide-react'
+import { Droplets, AlertCircle, ChevronRight } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 
-export default function PlantCard({ plant, index }) {
+export default function PlantCard({ plant, index, compact = false }) {
   const navigate = useNavigate()
-  const { info, nickname, status, dueDays, daysSince, health } = plant
+  const { info, nickname, status, dueDays, daysSince } = plant
 
-  const statusConfig = {
+  const statusStyles = {
     overdue: {
-      bg: 'bg-red-50',
-      border: 'border-red-200',
+      ring: 'ring-red-300',
+      bg: 'bg-gradient-to-br from-red-50 to-orange-50',
+      accent: 'text-red-500',
       badge: 'bg-red-100 text-red-600',
-      icon: AlertCircle,
-      text: `已逾期 ${Math.abs(dueDays)} 天`,
+      urgency: '口渴很久了',
     },
     due: {
-      bg: 'bg-amber-50',
-      border: 'border-amber-200',
+      ring: 'ring-amber-300',
+      bg: 'bg-gradient-to-br from-amber-50 to-yellow-50',
+      accent: 'text-amber-600',
       badge: 'bg-amber-100 text-amber-700',
-      icon: Droplets,
-      text: '今天该浇水了',
+      urgency: '今天该喝水啦',
     },
     healthy: {
-      bg: 'bg-cream-50',
-      border: 'border-wood-200',
+      ring: 'ring-moss-300',
+      bg: 'bg-gradient-to-br from-cream-50 to-moss-50',
+      accent: 'text-forest-500',
       badge: 'bg-moss-100 text-forest-600',
-      icon: CheckCircle2,
-      text: `${dueDays > 1 ? `还有 ${dueDays} 天` : '状态良好'}`,
+      urgency: `${dueDays > 1 ? `还有 ${dueDays} 天` : '状态不错'}`,
     },
   }
 
-  const config = statusConfig[status] || statusConfig.healthy
-  const StatusIcon = config.icon
+  const style = statusStyles[status] || statusStyles.healthy
 
   return (
     <motion.div
@@ -40,37 +39,65 @@ export default function PlantCard({ plant, index }) {
       transition={{ delay: index * 0.08, duration: 0.4 }}
       whileTap={{ scale: 0.97 }}
       onClick={() => navigate(`/plant/${plant.id}`)}
-      className={`relative rounded-2xl border ${config.border} ${config.bg} p-4 cursor-pointer overflow-hidden`}
+      className={`relative rounded-2xl ${style.bg} p-4 cursor-pointer overflow-hidden ring-1 ${style.ring} shadow-sm hover:shadow-md transition-shadow`}
     >
-      <div className="flex items-center gap-3">
-        <div
-          className="w-14 h-14 rounded-xl flex items-center justify-center text-2xl shadow-sm"
-          style={{ backgroundColor: info?.color + '20' }}
+      {/* Decorative blob */}
+      <div
+        className="absolute -right-4 -top-4 w-24 h-24 rounded-full opacity-20 blur-xl"
+        style={{ backgroundColor: info?.color }}
+      />
+
+      <div className="relative flex items-center gap-4">
+        {/* Large emoji avatar */}
+        <motion.div
+          animate={status === 'overdue' ? { rotate: [-2, 2, -2], transition: { repeat: Infinity, duration: 2 } } : {}}
+          className="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl shadow-inner shrink-0"
+          style={{ backgroundColor: info?.color + '18' }}
         >
           {info?.emoji}
-        </div>
+        </motion.div>
+
         <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2">
-            <h3 className="font-semibold text-forest-800 truncate">{nickname}</h3>
-            <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${config.badge}`}>
-              <StatusIcon size={10} className="inline mr-0.5 -mt-0.5" />
-              {config.text}
+          <div className="flex items-center gap-2 mb-0.5">
+            <h3 className="font-bold text-forest-800 text-base">{nickname}</h3>
+            <span className={`text-[10px] px-2 py-0.5 rounded-full font-semibold ${style.badge}`}>
+              {style.urgency}
             </span>
           </div>
-          <p className="text-xs text-forest-400 mt-0.5">{info?.category}</p>
-          <div className="flex items-center gap-3 mt-2">
-            <div className="flex-1 h-1.5 bg-wood-100 rounded-full overflow-hidden">
+
+          <p className="text-xs text-forest-400 mb-2">{info?.category} · {info?.waterInterval}天周期</p>
+
+          {/* Thirst bar - cute water drop visualization */}
+          <div className="flex items-center gap-2">
+            <div className="flex-1 h-2 bg-white/60 rounded-full overflow-hidden">
               <motion.div
                 className="h-full rounded-full"
-                style={{ backgroundColor: info?.color || '#4A7C59' }}
+                style={{
+                  background: status === 'overdue'
+                    ? 'linear-gradient(90deg, #ef4444, #f97316)'
+                    : status === 'due'
+                      ? 'linear-gradient(90deg, #f59e0b, #eab308)'
+                      : 'linear-gradient(90deg, #4A7C59, #8FB996)',
+                }}
                 initial={{ width: 0 }}
-                animate={{ width: `${health}%` }}
-                transition={{ delay: 0.3, duration: 0.6 }}
+                animate={{ width: `${Math.max(5, Math.min(100, 100 - (daysSince / (info?.waterInterval || 7)) * 100))}%` }}
+                transition={{ delay: 0.3, duration: 0.8 }}
               />
             </div>
-            <span className="text-[10px] text-forest-400">{health}%</span>
+            <div className="flex items-center gap-0.5">
+              {[...Array(3)].map((_, i) => (
+                <Droplets
+                  key={i}
+                  size={10}
+                  className={i < (status === 'overdue' ? 0 : status === 'due' ? 1 : 2) ? style.accent : 'text-wood-200'}
+                  fill={i < (status === 'overdue' ? 0 : status === 'due' ? 1 : 2) ? 'currentColor' : 'none'}
+                />
+              ))}
+            </div>
           </div>
         </div>
+
+        <ChevronRight size={18} className="text-forest-300 shrink-0" />
       </div>
     </motion.div>
   )

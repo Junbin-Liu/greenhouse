@@ -5,17 +5,16 @@ const STORAGE_KEY = 'greenhouse_data_v1';
 
 const getDefaultPlants = () => {
   const now = new Date().toISOString();
-  const threeDaysAgo = new Date(Date.now() - 3 * 86400000).toISOString();
-  const fiveDaysAgo = new Date(Date.now() - 5 * 86400000).toISOString();
-  const weekAgo = new Date(Date.now() - 7 * 86400000).toISOString();
+  // 测试模式：所有植物都设为逾期，方便测试UI
+  const longAgo = new Date(Date.now() - 30 * 86400000).toISOString();
 
   return [
-    { id: 'p1', plantId: 'jacaranda', nickname: '蓝花楹', addedAt: now, lastWatered: fiveDaysAgo, health: 85, logs: [{ type: 'water', date: fiveDaysAgo, note: '初次记录' }] },
-    { id: 'p2', plantId: 'kalanchoe', nickname: '长寿花', addedAt: now, lastWatered: weekAgo, health: 92, logs: [{ type: 'water', date: weekAgo, note: '初次记录' }] },
-    { id: 'p3', plantId: 'dracaena-reflexa', nickname: '百合竹', addedAt: now, lastWatered: threeDaysAgo, health: 88, logs: [{ type: 'water', date: threeDaysAgo, note: '初次记录' }] },
-    { id: 'p4', plantId: 'anthurium', nickname: '红掌', addedAt: now, lastWatered: fiveDaysAgo, health: 80, logs: [{ type: 'water', date: fiveDaysAgo, note: '初次记录' }] },
-    { id: 'p5', plantId: 'impatiens', nickname: '洋凤仙', addedAt: now, lastWatered: threeDaysAgo, health: 75, logs: [{ type: 'water', date: threeDaysAgo, note: '初次记录' }] },
-    { id: 'p6', plantId: 'alocasia', nickname: '黑叶芋', addedAt: now, lastWatered: fiveDaysAgo, health: 82, logs: [{ type: 'water', date: fiveDaysAgo, note: '初次记录' }] },
+    { id: 'p1', plantId: 'jacaranda', nickname: '蓝花楹', addedAt: now, lastWatered: longAgo, health: 72, logs: [{ type: 'water', date: longAgo, note: '初次记录' }] },
+    { id: 'p2', plantId: 'kalanchoe', nickname: '长寿花', addedAt: now, lastWatered: longAgo, health: 88, logs: [{ type: 'water', date: longAgo, note: '初次记录' }] },
+    { id: 'p3', plantId: 'dracaena-reflexa', nickname: '百合竹', addedAt: now, lastWatered: longAgo, health: 80, logs: [{ type: 'water', date: longAgo, note: '初次记录' }] },
+    { id: 'p4', plantId: 'anthurium', nickname: '红掌', addedAt: now, lastWatered: longAgo, health: 65, logs: [{ type: 'water', date: longAgo, note: '初次记录' }] },
+    { id: 'p5', plantId: 'impatiens', nickname: '洋凤仙', addedAt: now, lastWatered: longAgo, health: 55, logs: [{ type: 'water', date: longAgo, note: '初次记录' }] },
+    { id: 'p6', plantId: 'alocasia', nickname: '黑叶芋', addedAt: now, lastWatered: longAgo, health: 78, logs: [{ type: 'water', date: longAgo, note: '初次记录' }] },
   ];
 };
 
@@ -26,7 +25,7 @@ const loadData = () => {
   } catch (e) {
     console.error('加载数据失败', e);
   }
-  const defaults = { plants: getDefaultPlants(), settings: { city: null } };
+  const defaults = { plants: getDefaultPlants(), settings: { city: '广州' } };
   saveData(defaults);
   return defaults;
 };
@@ -59,7 +58,7 @@ export function usePlantStore() {
       const dueDays = interval - daysSince;
       let status = 'healthy';
       if (dueDays < 0) status = 'overdue';
-      else if (dueDays <= 1) status = 'due';
+      else if (dueDays <= 0) status = 'due';
 
       return {
         ...mp,
@@ -81,7 +80,7 @@ export function usePlantStore() {
     const dueDays = interval - daysSince;
     let status = 'healthy';
     if (dueDays < 0) status = 'overdue';
-    else if (dueDays <= 1) status = 'due';
+    else if (dueDays <= 0) status = 'due';
 
     return {
       ...my,
@@ -98,7 +97,7 @@ export function usePlantStore() {
       ...prev,
       plants: prev.plants.map(p => {
         if (p.id !== id) return p;
-        const newHealth = Math.min(100, (p.health || 80) + 5);
+        const newHealth = Math.min(100, (p.health || 80) + 8);
         return {
           ...p,
           lastWatered: now,
@@ -160,7 +159,7 @@ export function usePlantStore() {
     updateNickname,
     exportData,
     importData,
-    city: data.settings?.city || null,
+    city: data.settings?.city || '广州',
     setCity,
   };
 }
