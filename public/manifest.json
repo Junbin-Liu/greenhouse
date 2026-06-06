@@ -1,0 +1,23 @@
+{
+  "name": "青舍",
+  "short_name": "青舍",
+  "description": "你的私人花房管家",
+  "start_url": "/greenhouse/",
+  "display": "standalone",
+  "background_color": "#F7F5F0",
+  "theme_color": "#4A7C59",
+  "orientation": "portrait",
+  "scope": "/greenhouse/",
+  "icons": [
+    {
+      "src": "/greenhouse/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/greenhouse/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

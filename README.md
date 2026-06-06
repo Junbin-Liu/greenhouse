@@ -1,0 +1,156 @@
+# 青舍 - 部署指南
+
+> 你的私人花房管家 PWA 应用
+
+## 快速部署到 GitHub Pages（推荐）
+
+### 第一步：在 GitHub 创建仓库
+
+1. 打开 [github.com](https://github.com) 并登录你的账号 `Junbin-Liu`
+2. 点击右上角 **+** → **New repository**
+3. 仓库名称填写：`greenhouse`
+4. 选择 **Public**（公开）
+5. 勾选 **Add a README file**
+6. 点击 **Create repository**
+
+### 第二步：上传代码
+
+#### 方法 A：直接上传（最简单，不用装任何软件）
+
+1. 进入你刚创建的 `greenhouse` 仓库页面
+2. 点击 **Add file** → **Upload files**
+3. 把本文件夹（`greenhouse`）里的**所有文件和文件夹**拖进去：
+   - `index.html`
+   - `package.json`
+   - `vite.config.js`
+   - `tailwind.config.js`
+   - `postcss.config.js`
+   - `src/` 文件夹（包含所有代码）
+   - `public/` 文件夹（包含图标和 manifest）
+4. 下方 Commit 信息写：`init: 青舍 v1.0`
+5. 点击 **Commit changes**
+
+> ⚠️ 注意：必须保留 `src/` 和 `public/` 的目录结构，不要 flatten。
+
+#### 方法 B：用 Git 命令（如果你已安装 Git）
+
+```bash
+# 进入项目文件夹
+cd greenhouse
+
+# 初始化 git
+git init
+
+# 添加所有文件
+git add .
+
+# 提交
+git commit -m "init: 青舍 v1.0"
+
+# 关联远程仓库（把下面 YOUR_TOKEN 换成你的 GitHub 个人访问令牌，或直接用 https）
+git remote add origin https://github.com/Junbin-Liu/greenhouse.git
+
+# 推送
+git branch -M main
+git push -u origin main
+```
+
+### 第三步：开启 GitHub Pages
+
+1. 在你的 `greenhouse` 仓库页面，点击顶部 **Settings**
+2. 左侧菜单找到 **Pages**（在 Code and automation 下面）
+3. **Source** 选择 **Deploy from a branch**
+4. **Branch** 选择 `main`，文件夹选择 `/ (root)`
+5. 点击 **Save**
+6. 等待 1-2 分钟，刷新页面，上方会出现绿色提示：
+   > Your site is live at `https://junbin-liu.github.io/greenhouse/`
+
+🎉 **这就是你的专属链接！**
+
+---
+
+## 添加到手机桌面（像原生 App 一样使用）
+
+### iPhone (Safari)
+1. 用 Safari 打开你的链接
+2. 点击底部分享按钮 ⬆️
+3. 下滑找到 **"添加到主屏幕"**
+4. 点击 **添加**
+5. 桌面上会出现「青舍」图标，点击即全屏打开
+
+### Android (Chrome)
+1. 用 Chrome 打开你的链接
+2. 点击右上角 ⋮ 菜单
+3. 选择 **"添加到主屏幕"** 或 **"安装应用"**
+4. 确认添加
+
+---
+
+## 使用说明
+
+### 首次打开
+- 应用会自动加载你预置的 6 株植物：蓝花楹、长寿花、百合竹、红掌、洋凤仙、黑叶芋
+- 首次使用会要求你设置城市，用于获取天气和时节建议
+
+### 核心功能
+| 页面 | 功能 |
+|------|------|
+| **花园** | 查看今日待浇水植物、快速打卡、浏览所有植物状态 |
+| **植物详情** | 浇水打卡（带水滴动画）、查看健康度、养护记录时间轴 |
+| **时节** | 当前季节养护建议、针对你植物的个性化时令提醒 |
+| **我的** | 导出/导入数据备份 |
+
+### 浇水打卡
+- 首页「今日待办」直接点击水滴按钮快速浇水
+- 进入植物详情页，点击中央大水滴按钮，有涟漪动画和正反馈
+- 浇水后健康度 +5%，并生成照顾记录
+
+### 数据备份
+- 所有数据存在浏览器本地（localStorage）
+- 在「我的」页面可以**导出 JSON 备份**到手机
+- 换手机或清缓存前，务必先导出备份，之后用**恢复数据**功能导入
+
+---
+
+## 后续更新（程序功能升级）
+
+当我开发了新功能（比如拍照记录、更多植物品种、统计图表等），你会收到通知，然后：
+
+### 更新方式
+1. 我会把新代码发给你（或更新到某个模板仓库）
+2. 你重复**第二步**的方法 A：进入 GitHub 仓库 → 上传新文件覆盖旧文件
+3. GitHub Pages 会自动重新部署（约 1-2 分钟）
+4. 你打开手机上的青舍，**下拉刷新**或重新打开，即为最新版
+5. **你的植物数据不会丢失**（存在浏览器本地，和代码无关）
+
+> 💡 如果某次更新后数据异常，可以用之前导出的 JSON 备份恢复。
+
+---
+
+## 技术栈
+
+- React 18 + Vite + Tailwind CSS
+- Framer Motion（动画）
+- Lucide React（图标）
+- localStorage（本地数据存储）
+- Open-Meteo API（免费天气数据）
+
+---
+
+## 常见问题
+
+**Q：为什么需要设置城市？**  
+A：用于获取当地天气和湿度，给出更精准的养护建议（如"空气干燥，建议喷雾"）。
+
+**Q：换手机后数据还在吗？**  
+A：数据存在原手机的浏览器里，换手机前务必在「我的」页面导出备份，新手机上导入即可。
+
+**Q：可以离线使用吗？**  
+A：可以！首次加载后，PWA 会缓存核心文件，断网也能打开和查看数据。但天气功能需要联网。
+
+**Q：iOS 推送通知能用吗？**  
+A：目前 iOS 对 PWA 推送支持有限，提醒只在打开 App 时显示。如需强提醒，可配合手机自带闹钟。
+
+---
+
+Enjoy your green sanctuary! 🌿
