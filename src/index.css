@@ -2,13 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap');
 
 @layer base {
   body {
     font-family: 'Noto Sans SC', system-ui, -apple-system, sans-serif;
-    background-color: #F7F5F0;
-    color: #2D4A3E;
+    background-color: #F5F2EC;
+    color: #1a2f1a;
     -webkit-tap-highlight-color: transparent;
     overscroll-behavior-y: none;
   }

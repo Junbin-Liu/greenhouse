@@ -1,5 +1,4 @@
 import { motion } from 'framer-motion'
-import { Calendar, Sun, CloudRain, Snowflake, Leaf } from 'lucide-react'
 import { SEASON_ADVICE } from '../data/plantDatabase'
 
 export default function SeasonGuidePage({ store }) {
@@ -31,10 +30,10 @@ export default function SeasonGuidePage({ store }) {
   }
 
   const seasonIcons = {
-    spring: <Leaf size={20} className="text-moss-400" />,
-    summer: <Sun size={20} className="text-amber-400" />,
-    autumn: <Leaf size={20} className="text-wood-400" />,
-    winter: <Snowflake size={20} className="text-blue-300" />,
+    spring: '🌱',
+    summer: '☀️',
+    autumn: '🍂',
+    winter: '❄️',
   }
 
   const seasonKey = Object.keys(SEASON_ADVICE).find(k => SEASON_ADVICE[k].months.includes(month)) || 'spring'
@@ -44,18 +43,20 @@ export default function SeasonGuidePage({ store }) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="px-4 pt-6 pb-4 space-y-5"
+      className="px-5 pt-7 pb-4"
     >
-      <div>
-        <h1 className="text-2xl font-bold text-forest-800">时节指南</h1>
-        <p className="text-sm text-forest-400 mt-0.5">顺应天时，善待草木</p>
+      <div className="mb-6">
+        <h1 className="text-[28px] font-bold text-[#1a2f1a] tracking-[4px]" style={{ fontFamily: "'Ma Shan Zheng', cursive" }}>
+          时节指南
+        </h1>
+        <p className="text-xs text-[#7a9a7a] mt-1 tracking-wider">顺应天时，善待草木</p>
       </div>
 
-      {/* Current Season Card */}
-      <div className="bg-gradient-to-br from-forest-50 to-moss-100 rounded-2xl p-5 border border-forest-200">
+      {/* 当前季节 */}
+      <div className="bg-gradient-to-br from-[rgba(90,124,90,0.08)] to-[rgba(139,185,150,0.05)] rounded-xl p-5 border border-[rgba(90,124,90,0.12)] mb-6">
         <div className="flex items-center gap-2 mb-3">
-          {seasonIcons[seasonKey]}
-          <h2 className="text-lg font-bold text-forest-700">{currentSeason.name} · {currentSeason.theme}</h2>
+          <span className="text-2xl">{seasonIcons[seasonKey]}</span>
+          <h2 className="text-lg font-bold text-[#1a2f1a]">{currentSeason.name} · {currentSeason.theme}</h2>
         </div>
         <div className="space-y-2">
           {currentSeason.tips.map((tip, i) => (
@@ -64,9 +65,9 @@ export default function SeasonGuidePage({ store }) {
               initial={{ opacity: 0, x: -10 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: i * 0.1 }}
-              className="flex items-start gap-2 text-sm text-forest-600"
+              className="flex items-start gap-2 text-sm text-[#3d5a3d]"
             >
-              <span className="w-5 h-5 rounded-full bg-forest-200 text-forest-700 text-[10px] flex items-center justify-center shrink-0 mt-0.5">
+              <span className="w-5 h-5 rounded-full bg-[rgba(90,124,90,0.15)] text-[#3d5a3d] text-[10px] flex items-center justify-center shrink-0 mt-0.5">
                 {i + 1}
               </span>
               <span>{tip}</span>
@@ -75,12 +76,12 @@ export default function SeasonGuidePage({ store }) {
         </div>
       </div>
 
-      {/* My Plants Season Advice */}
-      <div>
-        <h2 className="text-base font-semibold text-forest-700 mb-3 flex items-center gap-1.5">
-          <Calendar size={16} />
-          我的植物时令建议
-        </h2>
+      {/* 植物时令建议 */}
+      <div className="mb-4">
+        <div className="flex items-baseline gap-2 mb-3">
+          <span className="text-lg text-[#1a2f1a]" style={{ fontFamily: "'Ma Shan Zheng', cursive" }}>我的植物时令建议</span>
+          <div className="flex-1 h-px bg-gradient-to-r from-[#e8e4dc] to-transparent" />
+        </div>
         <div className="space-y-3">
           {plants.map((plant, i) => {
             const advices = getPlantSeasonAdvice(plant)
@@ -91,16 +92,18 @@ export default function SeasonGuidePage({ store }) {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.08 }}
-                className="bg-white/60 rounded-xl p-4 border border-wood-200"
+                className="bg-[#faf8f4] rounded-xl p-4 border border-[#e8e4dc]"
               >
-                <div className="flex items-center gap-2 mb-2">
-                  <span className="text-lg">{plant.info?.emoji}</span>
-                  <h3 className="font-medium text-forest-700">{plant.nickname}</h3>
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="w-10 h-10 rounded-full overflow-hidden border border-[#e8e4dc]">
+                    <img src={plant.info?.image} alt={plant.nickname} className="w-full h-full object-cover" />
+                  </div>
+                  <h3 className="font-medium text-[#1a2f1a]">{plant.nickname}</h3>
                 </div>
                 <div className="space-y-1">
                   {advices.map((a, j) => (
-                    <p key={j} className="text-xs text-forest-500 flex items-start gap-1.5">
-                      <span className="text-forest-300 mt-0.5">•</span>
+                    <p key={j} className="text-xs text-[#5a7c5a] flex items-start gap-1.5">
+                      <span className="text-[#7a9a7a] mt-0.5">•</span>
                       {a}
                     </p>
                   ))}
@@ -111,11 +114,8 @@ export default function SeasonGuidePage({ store }) {
         </div>
       </div>
 
-      {/* Monthly Calendar Hint */}
-      <div className="bg-cream-50 rounded-xl p-4 border border-wood-200">
-        <p className="text-xs text-forest-400 text-center">
-          {month}月 · {new Date().getFullYear()}年
-        </p>
+      <div className="text-center py-4">
+        <p className="text-xs text-[#7a9a7a]">{month}月 · {new Date().getFullYear()}年</p>
       </div>
     </motion.div>
   )

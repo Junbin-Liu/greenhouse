@@ -1,14 +1,14 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Download, Upload, Sprout, Heart, RefreshCw, CheckCircle2, AlertCircle } from 'lucide-react'
+import { Download, Upload, RefreshCw, CheckCircle2, AlertCircle } from 'lucide-react'
 
-const LOCAL_VERSION = '1.1.0'
+const LOCAL_VERSION = '1.2.0'
 
 export default function ProfilePage({ store }) {
   const [importText, setImportText] = useState('')
   const [showImport, setShowImport] = useState(false)
   const [message, setMessage] = useState('')
-  const [updateStatus, setUpdateStatus] = useState('idle') // idle | checking | available | latest
+  const [updateStatus, setUpdateStatus] = useState('idle')
   const [remoteVersion, setRemoteVersion] = useState('')
 
   const showToast = (msg) => {
@@ -43,12 +43,10 @@ export default function ProfilePage({ store }) {
   const checkUpdate = async () => {
     setUpdateStatus('checking')
     try {
-      // 加时间戳防止缓存
       const res = await fetch(`/greenhouse/version.json?t=${Date.now()}`, { cache: 'no-store' })
       if (!res.ok) throw new Error('fetch failed')
       const json = await res.json()
       setRemoteVersion(json.version)
-
       if (json.version !== LOCAL_VERSION) {
         setUpdateStatus('available')
       } else {
@@ -62,7 +60,6 @@ export default function ProfilePage({ store }) {
   }
 
   const doUpdate = () => {
-    // 强制刷新，跳过 Service Worker 缓存
     window.location.reload(true)
   }
 
@@ -71,22 +68,22 @@ export default function ProfilePage({ store }) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="px-4 pt-6 pb-4 space-y-5"
+      className="px-5 pt-7 pb-4"
     >
-      <div className="text-center py-4">
-        <div className="w-16 h-16 rounded-full bg-forest-100 flex items-center justify-center mx-auto mb-3">
-          <Sprout size={28} className="text-forest-500" />
+      <div className="text-center py-6 mb-6">
+        <div className="w-16 h-16 rounded-full bg-[rgba(90,124,90,0.1)] flex items-center justify-center mx-auto mb-3 border border-[rgba(90,124,90,0.15)]">
+          <span className="text-3xl" style={{ fontFamily: "'Ma Shan Zheng', cursive" }}>青</span>
         </div>
-        <h1 className="text-xl font-bold text-forest-800">青舍</h1>
-        <p className="text-xs text-forest-400 mt-1">v{LOCAL_VERSION} · 你的私人花房管家</p>
+        <h1 className="text-xl font-bold text-[#1a2f1a]" style={{ fontFamily: "'Ma Shan Zheng', cursive" }}>青舍</h1>
+        <p className="text-xs text-[#7a9a7a] mt-1 tracking-wider">v{LOCAL_VERSION} · 你的私人花房管家</p>
       </div>
 
-      {/* Update Section */}
-      <div className="bg-white/60 rounded-2xl border border-wood-200 overflow-hidden">
-        <div className="p-4 border-b border-wood-100">
-          <h2 className="text-sm font-semibold text-forest-700">版本更新</h2>
+      {/* 版本更新 */}
+      <div className="bg-[#faf8f4] rounded-xl border border-[#e8e4dc] overflow-hidden mb-5">
+        <div className="px-4 py-3 border-b border-[#e8e4dc]">
+          <h2 className="text-sm font-semibold text-[#1a2f1a]">版本更新</h2>
         </div>
-        <div className="p-4 space-y-3">
+        <div className="p-4">
           <AnimatePresence mode="wait">
             {updateStatus === 'available' ? (
               <motion.div
@@ -94,16 +91,16 @@ export default function ProfilePage({ store }) {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
-                className="bg-amber-50 rounded-xl p-3 border border-amber-200"
+                className="bg-[#fff8e7] rounded-lg p-3 border border-[#f0e0b0]"
               >
                 <div className="flex items-start gap-2">
-                  <AlertCircle size={18} className="text-amber-500 shrink-0 mt-0.5" />
+                  <AlertCircle size={18} className="text-[#b8956a] shrink-0 mt-0.5" />
                   <div className="flex-1">
-                    <p className="text-sm font-medium text-amber-700">发现新版本 v{remoteVersion}</p>
-                    <p className="text-xs text-amber-600 mt-0.5">当前版本 v{LOCAL_VERSION}，建议立即更新</p>
+                    <p className="text-sm font-medium text-[#8b6914]">发现新版本 v{remoteVersion}</p>
+                    <p className="text-xs text-[#a89060] mt-0.5">当前版本 v{LOCAL_VERSION}，建议立即更新</p>
                     <button
                       onClick={doUpdate}
-                      className="mt-2 w-full py-2 bg-forest-500 text-white rounded-lg text-sm font-medium"
+                      className="mt-2 w-full py-2 bg-[#3d5a3d] text-white rounded-lg text-sm font-medium"
                     >
                       立即刷新更新
                     </button>
@@ -116,10 +113,10 @@ export default function ProfilePage({ store }) {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
-                className="bg-moss-50 rounded-xl p-3 border border-moss-200 flex items-center gap-2"
+                className="bg-[#e8ede3] rounded-lg p-3 border border-[#d4e0d0] flex items-center gap-2"
               >
-                <CheckCircle2 size={18} className="text-forest-500 shrink-0" />
-                <p className="text-sm text-forest-600">已是最新版本</p>
+                <CheckCircle2 size={18} className="text-[#5a7c5a] shrink-0" />
+                <p className="text-sm text-[#3d5a3d]">已是最新版本</p>
               </motion.div>
             ) : (
               <motion.button
@@ -129,7 +126,7 @@ export default function ProfilePage({ store }) {
                 exit={{ opacity: 0 }}
                 onClick={checkUpdate}
                 disabled={updateStatus === 'checking'}
-                className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-forest-50 text-forest-700 text-sm font-medium hover:bg-forest-100 transition-colors disabled:opacity-60"
+                className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-[#f0ece4] text-[#3d5a3d] text-sm font-medium hover:bg-[#e8e4dc] transition-colors disabled:opacity-60"
               >
                 <RefreshCw size={16} className={updateStatus === 'checking' ? 'animate-spin' : ''} />
                 {updateStatus === 'checking' ? '检查中...' : '检查更新'}
@@ -139,22 +136,22 @@ export default function ProfilePage({ store }) {
         </div>
       </div>
 
-      {/* Data Management */}
-      <div className="bg-white/60 rounded-2xl border border-wood-200 overflow-hidden">
-        <div className="p-4 border-b border-wood-100">
-          <h2 className="text-sm font-semibold text-forest-700">数据管理</h2>
+      {/* 数据管理 */}
+      <div className="bg-[#faf8f4] rounded-xl border border-[#e8e4dc] overflow-hidden mb-5">
+        <div className="px-4 py-3 border-b border-[#e8e4dc]">
+          <h2 className="text-sm font-semibold text-[#1a2f1a]">数据管理</h2>
         </div>
         <div className="p-4 space-y-3">
           <button
             onClick={handleExport}
-            className="w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-forest-50 text-forest-700 text-sm font-medium hover:bg-forest-100 transition-colors"
+            className="w-full flex items-center gap-3 px-4 py-3 rounded-lg bg-[#e8ede3] text-[#3d5a3d] text-sm font-medium hover:bg-[#d4e0d0] transition-colors"
           >
             <Download size={18} />
             导出备份
           </button>
           <button
             onClick={() => setShowImport(!showImport)}
-            className="w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-wood-100 text-forest-700 text-sm font-medium hover:bg-wood-200 transition-colors"
+            className="w-full flex items-center gap-3 px-4 py-3 rounded-lg bg-[#f0ece4] text-[#3d5a3d] text-sm font-medium hover:bg-[#e8e4dc] transition-colors"
           >
             <Upload size={18} />
             恢复数据
@@ -170,11 +167,11 @@ export default function ProfilePage({ store }) {
                 value={importText}
                 onChange={e => setImportText(e.target.value)}
                 placeholder="粘贴备份 JSON 内容..."
-                className="w-full h-24 bg-cream-50 rounded-lg p-3 text-xs border border-wood-200 focus:outline-none focus:border-forest-400 text-forest-700"
+                className="w-full h-24 bg-[#f5f2ec] rounded-lg p-3 text-xs border border-[#e8e4dc] focus:outline-none focus:border-[#5a7c5a] text-[#1a2f1a]"
               />
               <button
                 onClick={handleImport}
-                className="w-full py-2 bg-forest-500 text-white rounded-lg text-sm font-medium"
+                className="w-full py-2 bg-[#3d5a3d] text-white rounded-lg text-sm font-medium"
               >
                 确认恢复
               </button>
@@ -183,17 +180,17 @@ export default function ProfilePage({ store }) {
         </div>
       </div>
 
-      {/* About */}
-      <div className="bg-white/60 rounded-2xl border border-wood-200 p-4">
-        <h2 className="text-sm font-semibold text-forest-700 mb-3">关于</h2>
-        <div className="space-y-2 text-xs text-forest-500">
+      {/* 关于 */}
+      <div className="bg-[#faf8f4] rounded-xl border border-[#e8e4dc] p-4 mb-4">
+        <h2 className="text-sm font-semibold text-[#1a2f1a] mb-3">关于</h2>
+        <div className="space-y-2 text-xs text-[#5a7c5a]">
           <p>青舍是一款专注于绿植养护管理的 PWA 应用。</p>
           <p>所有数据存储在本地浏览器中，不会上传至服务器。</p>
           <p>天气数据来自 Open-Meteo 免费 API。</p>
         </div>
       </div>
 
-      {/* Message Toast */}
+      {/* Toast */}
       <AnimatePresence>
         {message && (
           <motion.div
@@ -202,7 +199,7 @@ export default function ProfilePage({ store }) {
             exit={{ opacity: 0 }}
             className="fixed bottom-24 left-0 right-0 flex justify-center z-50"
           >
-            <div className="bg-forest-700 text-white text-sm px-4 py-2 rounded-full shadow-lg">
+            <div className="bg-[#3d5a3d] text-white text-sm px-4 py-2 rounded-full shadow-lg">
               {message}
             </div>
           </motion.div>
@@ -210,8 +207,8 @@ export default function ProfilePage({ store }) {
       </AnimatePresence>
 
       <div className="text-center pt-4 pb-8">
-        <p className="text-[10px] text-forest-300 flex items-center justify-center gap-1">
-          Made with <Heart size={10} className="text-red-400 fill-current" /> for plant lovers
+        <p className="text-[10px] text-[#7a9a7a] tracking-wider">
+          为植物爱好者而作
         </p>
       </div>
     </motion.div>

@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>青舍 UI 预览 - 方案F：花架写意风</title>
+<link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --ink: #1a2f1a;
+  --ink-light: #3d5a3d;
+  --stone: #5a7c5a;
+  --moss: #7a9a7a;
+  --silk: #f5f2ec;
+  --paper: #faf8f4;
+  --wood: #8B6914;
+  --wood-light: #C4A77D;
+  --cinnabar: #c45c4a;
+  --mist: rgba(26, 47, 26, 0.06);
+}
+
+body {
+  font-family: 'Noto Sans SC', sans-serif;
+  background: var(--silk);
+  max-width: 420px;
+  margin: 0 auto;
+  min-height: 100vh;
+  padding: 0 0 100px;
+  color: var(--ink);
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* 水墨背景 */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 50% at 20% 40%, rgba(90, 124, 90, 0.06) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 70%, rgba(184, 149, 106, 0.04) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* 头部 */
+.hero {
+  position: relative;
+  z-index: 1;
+  padding: 24px 20px 16px;
+  margin-bottom: 4px;
+}
+.hero h1 {
+  font-family: 'Ma Shan Zheng', cursive;
+  font-size: 38px;
+  color: var(--ink);
+  letter-spacing: 8px;
+}
+.hero .sub {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 12px;
+  color: var(--stone);
+  margin-top: 6px;
+  letter-spacing: 2px;
+}
+
+/* 天气 */
+.weather {
+  position: relative;
+  z-index: 1;
+  margin: 0 20px 20px;
+  padding: 10px 0;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  border-bottom: 1px solid var(--mist);
+}
+.weather .temp-box {
+  text-align: center;
+  padding-right: 14px;
+  border-right: 1px solid var(--mist);
+}
+.weather .temp {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--ink-light);
+}
+.weather .city {
+  font-size: 10px;
+  color: var(--stone);
+  margin-top: 2px;
+}
+.weather .hint {
+  flex: 1;
+  font-size: 11px;
+  color: var(--wood);
+  line-height: 1.6;
+  font-weight: 300;
+}
+
+/* 待办轮播 - 小卡片，2-3个一屏 */
+.todo-section {
+  position: relative;
+  z-index: 1;
+  margin-bottom: 20px;
+}
+.todo-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 20px;
+  margin-bottom: 12px;
+}
+.todo-header .zh {
+  font-family: 'Ma Shan Zheng', cursive;
+  font-size: 20px;
+  color: var(--ink);
+}
+.todo-header .count {
+  font-size: 11px;
+  color: var(--cinnabar);
+  background: rgba(196, 92, 74, 0.08);
+  padding: 2px 8px;
+  border-radius: 10px;
+}
+.todo-header .line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--mist), transparent);
+}
+
+.todo-scroll {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 0 20px 8px;
+  scrollbar-width: none;
+}
+.todo-scroll::-webkit-scrollbar { display: none; }
+
+.todo-mini {
+  flex-shrink: 0;
+  width: 140px;
+  background: var(--paper);
+  border-radius: 12px;
+  padding: 12px;
+  box-shadow: 0 2px 10px var(--mist);
+  border: 1px solid rgba(139, 105, 20, 0.08);
+  position: relative;
+}
+.todo-mini .m-photo {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  margin: 0 auto 8px;
+  overflow: hidden;
+  border: 2px solid var(--mist);
+}
+.todo-mini .m-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.todo-mini .m-name {
+  font-family: 'Ma Shan Zheng', cursive;
+  font-size: 16px;
+  text-align: center;
+  color: var(--ink);
+}
+.todo-mini .m-status {
+  font-size: 10px;
+  color: var(--cinnabar);
+  text-align: center;
+  margin-top: 3px;
+}
+.todo-mini .m-water {
+  width: 36px;
+  height: 36px;
+  background: var(--cinnabar);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 14px;
+  margin: 8px auto 0;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(196, 92, 74, 0.3);
+}
+
+/* 花架区域 */
+.shelf-section {
+  position: relative;
+  z-index: 1;
+  padding: 0 16px;
+}
+.shelf-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.shelf-header .zh {
+  font-family: 'Ma Shan Zheng', cursive;
+  font-size: 20px;
+  color: var(--ink);
+}
+.shelf-header .line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--mist), transparent);
+}
+
+/* 花架容器 */
+.flower-shelf {
+  background: linear-gradient(180deg, 
+    rgba(139, 105, 20, 0.06) 0%,
+    rgba(139, 105, 20, 0.03) 100%);
+  border-radius: 8px;
+  padding: 20px 16px;
+  position: relative;
+  border: 1px solid rgba(139, 105, 20, 0.1);
+}
+/* 花架层板 */
+.flower-shelf .shelf-board {
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--wood-light), transparent);
+  border-radius: 2px;
+}
+.flower-shelf .board-1 { bottom: 35%; }
+.flower-shelf .board-2 { bottom: 65%; }
+
+/* 植物摆放 - 按高度 */
+.shelf-plants {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  position: relative;
+}
+
+/* 顶层 - 百合竹 1.2m（最大） */
+.plant-top {
+  position: relative;
+  z-index: 3;
+  margin-bottom: -20px;
+}
+.plant-top .p-pot {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid var(--wood-light);
+  box-shadow: 0 6px 20px rgba(139, 105, 20, 0.2);
+  cursor: pointer;
+  transition: transform 0.3s;
+  background: var(--paper);
+}
+.plant-top .p-pot:hover { transform: scale(1.05); }
+.plant-top .p-pot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.plant-top .p-label {
+  text-align: center;
+  margin-top: 8px;
+}
+.plant-top .p-label .name {
+  font-family: 'Ma Shan Zheng', cursive;
+  font-size: 18px;
+  color: var(--ink);
+}
+.plant-top .p-label .height {
+  font-size: 10px;
+  color: var(--stone);
+}
+
+/* 中层 - 蓝花楹 0.6m（中等） */
+.plant-mid {
+  position: relative;
+  z-index: 2;
+  margin-bottom: -15px;
+}
+.plant-mid .p-pot {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid var(--wood-light);
+  box-shadow: 0 4px 15px rgba(139, 105, 20, 0.15);
+  cursor: pointer;
+  transition: transform 0.3s;
+  background: var(--paper);
+}
+.plant-mid .p-pot:hover { transform: scale(1.05); }
+.plant-mid .p-pot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.plant-mid .p-label {
+  text-align: center;
+  margin-top: 6px;
+}
+.plant-mid .p-label .name {
+  font-family: 'Ma Shan Zheng', cursive;
+  font-size: 16px;
+  color: var(--ink);
+}
+.plant-mid .p-label .height {
+  font-size: 10px;
+  color: var(--stone);
+}
+
+/* 底层 - 4棵小盆栽 0.3m */
+.plant-bottom {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  position: relative;
+  z-index: 1;
+  padding-top: 10px;
+}
+.plant-small {
+  text-align: center;
+}
+.plant-small .p-pot {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid var(--wood-light);
+  box-shadow: 0 3px 10px rgba(139, 105, 20, 0.12);
+  cursor: pointer;
+  transition: transform 0.3s;
+  background: var(--paper);
+}
+.plant-small .p-pot:hover { transform: scale(1.08); }
+.plant-small .p-pot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.plant-small .p-label .name {
+  font-family: 'Ma Shan Zheng', cursive;
+  font-size: 13px;
+  color: var(--ink);
+  margin-top: 5px;
+}
+.plant-small .p-label .height {
+  font-size: 9px;
+  color: var(--stone);
+}
+/* 小红点 */
+.plant-small .p-dot {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  width: 16px;
+  height: 16px;
+  background: var(--cinnabar);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 9px;
+  box-shadow: 0 2px 6px rgba(196, 92, 74, 0.4);
+}
+
+/* 弹出详情卡片 */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(26, 47, 26, 0.4);
+  backdrop-filter: blur(4px);
+  z-index: 100;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.modal-overlay.active { display: flex; }
+
+.modal-card {
+  background: var(--paper);
+  border-radius: 12px;
+  width: 100%;
+  max-width: 340px;
+  overflow: hidden;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+  animation: modalIn 0.3s ease;
+}
+@keyframes modalIn {
+  from { opacity: 0; transform: scale(0.9) translateY(20px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+.modal-card .m-photo {
+  width: 100%;
+  aspect-ratio: 4/3;
+  overflow: hidden;
+}
+.modal-card .m-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.modal-card .m-content {
+  padding: 20px;
+}
+.modal-card .m-name {
+  font-family: 'Ma Shan Zheng', cursive;
+  font-size: 24px;
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+.modal-card .m-latin {
+  font-size: 10px;
+  color: var(--stone);
+  font-style: italic;
+  font-family: 'Noto Serif SC', serif;
+  margin-bottom: 12px;
+}
+.modal-card .m-status {
+  font-size: 12px;
+  color: var(--cinnabar);
+  margin-bottom: 8px;
+  padding: 6px 10px;
+  background: rgba(196, 92, 74, 0.06);
+  border-radius: 6px;
+}
+.modal-card .m-meta {
+  font-size: 11px;
+  color: var(--moss);
+  line-height: 1.8;
+  margin-bottom: 16px;
+}
+.modal-card .m-action {
+  display: flex;
+  gap: 10px;
+}
+.modal-card .m-btn {
+  flex: 1;
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+  font-family: 'Noto Sans SC', sans-serif;
+}
+.modal-card .m-btn.primary {
+  background: var(--cinnabar);
+  color: white;
+  box-shadow: 0 3px 10px rgba(196, 92, 74, 0.3);
+}
+.modal-card .m-btn.secondary {
+  background: var(--mist);
+  color: var(--ink-light);
+}
+.modal-card .m-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 32px;
+  height: 32px;
+  background: rgba(255,255,255,0.9);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 18px;
+  color: var(--ink);
+  border: none;
+}
+
+/* 底部导航 */
+.nav {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 420px;
+  background: rgba(245, 242, 236, 0.92);
+  backdrop-filter: blur(12px);
+  border-top: 1px solid var(--mist);
+  display: flex;
+  justify-content: space-around;
+  padding: 10px 0 24px;
+  z-index: 10;
+}
+.nav-item {
+  text-align: center;
+  font-size: 10px;
+  color: var(--moss);
+  font-weight: 300;
+  letter-spacing: 1px;
+}
+.nav-item.active {
+  color: var(--ink-light);
+  font-weight: 500;
+}
+.nav-item .icon {
+  font-family: 'Ma Shan Zheng', cursive;
+  font-size: 24px;
+  margin-bottom: 2px;
+  display: block;
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>青舍</h1>
+  <div class="sub">一花一世界 · 一叶一菩提</div>
+</div>
+
+<div class="weather">
+  <div class="temp-box">
+    <div class="temp">28°</div>
+    <div class="city">广州 · 晴</div>
+  </div>
+  <div class="hint">空气较干燥，观叶植物建议喷雾增湿</div>
+</div>
+
+<!-- 待办轮播 -->
+<div class="todo-section">
+  <div class="todo-header">
+    <span class="zh">今日待办</span>
+    <span class="count">6株待浇</span>
+    <div class="line"></div>
+  </div>
+  <div class="todo-scroll">
+    <div class="todo-mini">
+      <div class="m-photo"><img src="pics-ai/蓝花楹.png" alt=""></div>
+      <div class="m-name">蓝花楹</div>
+      <div class="m-status">逾期15天</div>
+      <div class="m-water">水</div>
+    </div>
+    <div class="todo-mini">
+      <div class="m-photo"><img src="pics-ai/红掌.png" alt=""></div>
+      <div class="m-name">红掌</div>
+      <div class="m-status">逾期15天</div>
+      <div class="m-water">水</div>
+    </div>
+    <div class="todo-mini">
+      <div class="m-photo"><img src="pics-ai/洋凤仙.png" alt=""></div>
+      <div class="m-name">洋凤仙</div>
+      <div class="m-status">逾期15天</div>
+      <div class="m-water">水</div>
+    </div>
+    <div class="todo-mini">
+      <div class="m-photo"><img src="pics-ai/百合竹.png" alt=""></div>
+      <div class="m-name">百合竹</div>
+      <div class="m-status">逾期15天</div>
+      <div class="m-water">水</div>
+    </div>
+    <div class="todo-mini">
+      <div class="m-photo"><img src="pics-ai/长寿花.png" alt=""></div>
+      <div class="m-name">长寿花</div>
+      <div class="m-status">逾期15天</div>
+      <div class="m-water">水</div>
+    </div>
+    <div class="todo-mini">
+      <div class="m-photo"><img src="pics-ai/黑叶芋.png" alt=""></div>
+      <div class="m-name">黑叶芋</div>
+      <div class="m-status">逾期15天</div>
+      <div class="m-water">水</div>
+    </div>
+  </div>
+</div>
+
+<!-- 花架 -->
+<div class="shelf-section">
+  <div class="shelf-header">
+    <span class="zh">我的花架</span>
+    <div class="line"></div>
+  </div>
+  
+  <div class="flower-shelf">
+    <div class="shelf-board board-2"></div>
+    <div class="shelf-board board-1"></div>
+    
+    <div class="shelf-plants">
+      <!-- 顶层：百合竹 1.2m -->
+      <div class="plant-top">
+        <div class="p-pot" onclick="openModal('百合竹', 'pics-ai/百合竹.png', 'Dracaena reflexa', '已逾期15天', '适量 · 6天周期 · 耐阴常绿')">
+          <img src="pics-ai/百合竹.png" alt="百合竹">
+        </div>
+        <div class="p-label">
+          <div class="name">百合竹</div>
+          <div class="height">约1.2米</div>
+        </div>
+      </div>
+      
+      <!-- 中层：蓝花楹 0.6m -->
+      <div class="plant-mid">
+        <div class="p-pot" onclick="openModal('蓝花楹', 'pics-ai/蓝花楹.png', 'Jacaranda mimosifolia', '已逾期15天 · 快渴坏了', '浇透 · 2天周期 · 喜阳怕涝')">
+          <img src="pics-ai/蓝花楹.png" alt="蓝花楹">
+        </div>
+        <div class="p-label">
+          <div class="name">蓝花楹</div>
+          <div class="height">约0.6米</div>
+        </div>
+      </div>
+      
+      <!-- 底层：4棵小盆栽 0.3m -->
+      <div class="plant-bottom">
+        <div class="plant-small">
+          <div class="p-pot" style="position:relative;" onclick="openModal('红掌', 'pics-ai/红掌.png', 'Anthurium andraeanum', '已逾期15天 · 叶片微卷', '保持湿润 · 3天周期 · 喜湿耐阴')">
+            <div class="p-dot">!</div>
+            <img src="pics-ai/红掌.png" alt="红掌">
+          </div>
+          <div class="p-label">
+            <div class="name">红掌</div>
+            <div class="height">约0.3米</div>
+          </div>
+        </div>
+        <div class="plant-small">
+          <div class="p-pot" style="position:relative;" onclick="openModal('洋凤仙', 'pics-ai/洋凤仙.png', 'Impatiens walleriana', '已逾期15天', '充足 · 每天浇水 · 喜水喜半阴')">
+            <div class="p-dot">!</div>
+            <img src="pics-ai/洋凤仙.png" alt="洋凤仙">
+          </div>
+          <div class="p-label">
+            <div class="name">洋凤仙</div>
+            <div class="height">约0.3米</div>
+          </div>
+        </div>
+        <div class="plant-small">
+          <div class="p-pot" style="position:relative;" onclick="openModal('长寿花', 'pics-ai/长寿花.png', 'Kalanchoe blossfeldiana', '已逾期15天', '少量 · 10天周期 · 耐旱喜光')">
+            <img src="pics-ai/长寿花.png" alt="长寿花">
+          </div>
+          <div class="p-label">
+            <div class="name">长寿花</div>
+            <div class="height">约0.3米</div>
+          </div>
+        </div>
+        <div class="plant-small">
+          <div class="p-pot" style="position:relative;" onclick="openModal('黑叶芋', 'pics-ai/黑叶芋.png', 'Alocasia amazonica', '已逾期15天', '保持湿润 · 4天周期 · 喜阴喜湿')">
+            <div class="p-dot">!</div>
+            <img src="pics-ai/黑叶芋.png" alt="黑叶芋">
+          </div>
+          <div class="p-label">
+            <div class="name">黑叶芋</div>
+            <div class="height">约0.3米</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div style="height: 80px;"></div>
+
+<!-- 弹出卡片 -->
+<div class="modal-overlay" id="modal" onclick="closeModal(event)">
+  <div class="modal-card" onclick="event.stopPropagation()">
+    <button class="m-close" onclick="closeModal()">×</button>
+    <div class="m-photo">
+      <img id="modal-img" src="" alt="">
+    </div>
+    <div class="m-content">
+      <div class="m-name" id="modal-name"></div>
+      <div class="m-latin" id="modal-latin"></div>
+      <div class="m-status" id="modal-status"></div>
+      <div class="m-meta" id="modal-meta"></div>
+      <div class="m-action">
+        <button class="m-btn primary">浇水</button>
+        <button class="m-btn secondary">查看记录</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 底部导航 -->
+<div class="nav">
+  <div class="nav-item active">
+    <span class="icon">园</span>
+    <div>花园</div>
+  </div>
+  <div class="nav-item">
+    <span class="icon">时</span>
+    <div>时节</div>
+  </div>
+  <div class="nav-item">
+    <span class="icon">我</span>
+    <div>我的</div>
+  </div>
+</div>
+
+<script>
+function openModal(name, img, latin, status, meta) {
+  document.getElementById('modal-name').textContent = name;
+  document.getElementById('modal-img').src = img;
+  document.getElementById('modal-latin').textContent = latin;
+  document.getElementById('modal-status').textContent = status;
+  document.getElementById('modal-meta').textContent = meta;
+  document.getElementById('modal').classList.add('active');
+}
+function closeModal(e) {
+  if (!e || e.target.id === 'modal') {
+    document.getElementById('modal').classList.remove('active');
+  }
+}
+</script>
+
+</body>
+</html>

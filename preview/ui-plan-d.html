@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>青舍 UI 预览 - 方案D：中国写意风</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --ink: #2D3A2D;
+  --stone: #4A7C59;
+  --pine: #3D6B4F;
+  --moss: #6B8E6B;
+  --silk: #F7F5F0;
+  --paper: #FDFCFA;
+  --ochre: #C4A77D;
+  --cinnabar: #C45C4A;
+  --mist: #E8E4DC;
+  --faint: rgba(45, 58, 45, 0.08);
+}
+
+body {
+  font-family: 'Noto Sans SC', sans-serif;
+  background: var(--silk);
+  max-width: 420px;
+  margin: 0 auto;
+  min-height: 100vh;
+  padding: 28px 20px 100px;
+  color: var(--ink);
+}
+
+/* 宣纸底纹 */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(139,115,85,0.02) 3px, rgba(139,115,85,0.02) 4px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* 头部 —— 像画册扉页 */
+.header {
+  position: relative;
+  z-index: 1;
+  margin-bottom: 32px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--mist);
+}
+.header h1 {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--pine);
+  letter-spacing: 6px;
+  line-height: 1.2;
+}
+.header .sub {
+  font-size: 12px;
+  color: var(--ochre);
+  margin-top: 8px;
+  font-weight: 300;
+  letter-spacing: 2px;
+}
+.header .date {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 11px;
+  color: var(--moss);
+  margin-top: 6px;
+  letter-spacing: 1px;
+}
+
+/* 天气 —— 像题跋 */
+.weather {
+  position: relative;
+  z-index: 1;
+  margin-bottom: 32px;
+  padding: 16px 0;
+  border-left: 2px solid var(--stone);
+  padding-left: 16px;
+}
+.weather .city {
+  font-size: 11px;
+  color: var(--moss);
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+}
+.weather .temp {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 28px;
+  font-weight: 600;
+  color: var(--pine);
+}
+.weather .hint {
+  font-size: 12px;
+  color: var(--ochre);
+  margin-top: 8px;
+  line-height: 1.6;
+  font-weight: 300;
+}
+
+/* 章节标题 —— 像画轴题签 */
+.section {
+  position: relative;
+  z-index: 1;
+  margin: 36px 0 20px;
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+.section .zh {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--pine);
+  letter-spacing: 3px;
+}
+.section .en {
+  font-size: 10px;
+  color: var(--ochre);
+  letter-spacing: 1px;
+  font-weight: 300;
+}
+.section .line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--mist), transparent);
+}
+
+/* 待办卡片 —— 像贴在册页上的照片 */
+.todo-card {
+  position: relative;
+  z-index: 1;
+  background: var(--paper);
+  border-radius: 4px;
+  padding: 20px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 12px var(--faint);
+  border: 1px solid var(--mist);
+}
+/* 拍立得风格的图片区域 */
+.todo-card .photo-frame {
+  width: 100%;
+  aspect-ratio: 4/3;
+  background: linear-gradient(135deg, #E8EDE3, #D4E0D0);
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+  position: relative;
+  overflow: hidden;
+}
+.todo-card .photo-frame .placeholder {
+  font-size: 48px;
+  opacity: 0.6;
+}
+.todo-card .photo-frame .caption {
+  position: absolute;
+  bottom: 8px;
+  right: 10px;
+  font-family: 'Noto Serif SC', serif;
+  font-size: 10px;
+  color: var(--moss);
+  background: rgba(255,255,255,0.7);
+  padding: 2px 8px;
+  border-radius: 2px;
+}
+.todo-card .info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+.todo-card .info-row .name {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--pine);
+}
+.todo-card .info-row .status {
+  font-size: 11px;
+  color: var(--cinnabar);
+  font-weight: 500;
+  text-align: right;
+  line-height: 1.5;
+}
+.todo-card .meta {
+  font-size: 11px;
+  color: var(--moss);
+  font-weight: 300;
+  letter-spacing: 0.5px;
+  margin-bottom: 16px;
+}
+.todo-card .action {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 14px;
+  border-top: 1px dashed var(--mist);
+}
+.todo-card .action .label {
+  font-size: 12px;
+  color: var(--ochre);
+  font-weight: 300;
+}
+/* 印章式浇水按钮 */
+.todo-card .seal-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--cinnabar);
+  border: 2px solid rgba(255,255,255,0.3);
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 3px 10px rgba(196, 92, 74, 0.3);
+  transition: all 0.3s ease;
+  position: relative;
+}
+.todo-card .seal-btn::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 1px solid var(--cinnabar);
+  opacity: 0.3;
+}
+.todo-card .seal-btn:active {
+  transform: scale(0.92);
+  background: var(--stone);
+}
+
+/* 植物列表 —— 像藏品目录 */
+.plant-list {
+  position: relative;
+  z-index: 1;
+}
+.plant-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--mist);
+}
+.plant-item:last-child {
+  border-bottom: none;
+}
+/* 小照片框 */
+.plant-item .thumb {
+  width: 56px;
+  height: 56px;
+  border-radius: 2px;
+  background: linear-gradient(135deg, #E8EDE3, #D4E0D0);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px var(--faint);
+  position: relative;
+}
+.plant-item .thumb::after {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  border: 1px solid rgba(255,255,255,0.5);
+  border-radius: 1px;
+  pointer-events: none;
+}
+.plant-item .info {
+  flex: 1;
+  min-width: 0;
+}
+.plant-item .info .name {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--pine);
+}
+.plant-item .info .cycle {
+  font-size: 11px;
+  color: var(--moss);
+  margin-top: 3px;
+  font-weight: 300;
+}
+.plant-item .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--cinnabar);
+  flex-shrink: 0;
+  box-shadow: 0 0 6px rgba(196, 92, 74, 0.3);
+}
+
+/* 底部导航 */
+.nav {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 420px;
+  background: rgba(247, 245, 240, 0.92);
+  backdrop-filter: blur(12px);
+  border-top: 1px solid var(--mist);
+  display: flex;
+  justify-content: space-around;
+  padding: 12px 0 24px;
+  z-index: 10;
+}
+.nav-item {
+  text-align: center;
+  font-size: 10px;
+  color: var(--moss);
+  font-weight: 300;
+  letter-spacing: 1px;
+}
+.nav-item.active {
+  color: var(--pine);
+  font-weight: 500;
+}
+.nav-item .icon {
+  font-size: 22px;
+  margin-bottom: 4px;
+  display: block;
+  opacity: 0.7;
+}
+.nav-item.active .icon {
+  opacity: 1;
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>青舍</h1>
+  <div class="sub">PLANT CARE · 广州南阳台</div>
+  <div class="date">乙巳年 · 五月十一 · 小满后</div>
+</div>
+
+<div class="weather">
+  <div class="city">广州 · 南阳台</div>
+  <div class="temp">28°C ☀️</div>
+  <div class="hint">空气较干燥，观叶植物建议喷雾增湿。<br>气温较高，注意遮阴并避开正午浇水。</div>
+</div>
+
+<div class="section">
+  <span class="zh">今日待办</span>
+  <span class="en">TODAY · 6</span>
+  <div class="line"></div>
+</div>
+
+<div class="todo-card">
+  <div class="photo-frame">
+    <div class="placeholder">🌳</div>
+    <div class="caption">蓝花楹 · 2025.06</div>
+  </div>
+  <div class="info-row">
+    <div class="name">蓝花楹</div>
+    <div class="status">已逾期 15 天<br>快渴坏了</div>
+  </div>
+  <div class="meta">浇透 · 2天周期 · 喜阳怕涝</div>
+  <div class="action">
+    <span class="label">点击浇水</span>
+    <button class="seal-btn">水</button>
+  </div>
+</div>
+
+<div class="todo-card">
+  <div class="photo-frame">
+    <div class="placeholder">❤️</div>
+    <div class="caption">红掌 · 2025.06</div>
+  </div>
+  <div class="info-row">
+    <div class="name">红掌</div>
+    <div class="status">已逾期 15 天<br>叶片微卷</div>
+  </div>
+  <div class="meta">保持湿润 · 3天周期 · 喜湿耐阴</div>
+  <div class="action">
+    <span class="label">点击浇水</span>
+    <button class="seal-btn">水</button>
+  </div>
+</div>
+
+<div class="section">
+  <span class="zh">我的植物</span>
+  <span class="en">COLLECTION · 6</span>
+  <div class="line"></div>
+</div>
+
+<div class="plant-list">
+  <div class="plant-item">
+    <div class="thumb">🌳</div>
+    <div class="info">
+      <div class="name">蓝花楹</div>
+      <div class="cycle">2天周期 · 喜阳怕涝</div>
+    </div>
+    <div class="dot"></div>
+  </div>
+  <div class="plant-item">
+    <div class="thumb">🌸</div>
+    <div class="info">
+      <div class="name">长寿花</div>
+      <div class="cycle">10天周期 · 耐旱喜光</div>
+    </div>
+  </div>
+  <div class="plant-item">
+    <div class="thumb">🎋</div>
+    <div class="info">
+      <div class="name">百合竹</div>
+      <div class="cycle">6天周期 · 耐阴常绿</div>
+    </div>
+    <div class="dot"></div>
+  </div>
+  <div class="plant-item">
+    <div class="thumb">❤️</div>
+    <div class="info">
+      <div class="name">红掌</div>
+      <div class="cycle">3天周期 · 喜湿耐阴</div>
+    </div>
+    <div class="dot"></div>
+  </div>
+  <div class="plant-item">
+    <div class="thumb">🌺</div>
+    <div class="info">
+      <div class="name">洋凤仙</div>
+      <div class="cycle">每天浇水 · 喜水喜半阴</div>
+    </div>
+    <div class="dot"></div>
+  </div>
+  <div class="plant-item">
+    <div class="thumb">🍃</div>
+    <div class="info">
+      <div class="name">黑叶芋</div>
+      <div class="cycle">4天周期 · 喜阴喜湿</div>
+    </div>
+    <div class="dot"></div>
+  </div>
+</div>
+
+<div class="nav">
+  <div class="nav-item active">
+    <span class="icon">🏡</span>
+    <div>花园</div>
+  </div>
+  <div class="nav-item">
+    <span class="icon">📅</span>
+    <div>时节</div>
+  </div>
+  <div class="nav-item">
+    <span class="icon">👤</span>
+    <div>我的</div>
+  </div>
+</div>
+
+</body>
+</html>
