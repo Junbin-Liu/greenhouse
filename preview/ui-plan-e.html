@@ -3,14 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>青舍 UI 预览 - 方案E：水墨写意风</title>
+<title>青舍 UI 预览 - 列表版</title>
 <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 :root {
   --ink: #1a2f1a;
-  --ink-light: #3d5a3d;
   --stone: #5a7c5a;
   --moss: #7a9a7a;
   --silk: #f5f2ec;
@@ -26,123 +25,78 @@ body {
   max-width: 420px;
   margin: 0 auto;
   min-height: 100vh;
-  padding: 0;
+  padding: 0 0 100px;
   color: var(--ink);
-  position: relative;
-  overflow-x: hidden;
 }
 
-/* 水墨背景 */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background:
-    radial-gradient(ellipse 80% 50% at 20% 40%, rgba(90, 124, 90, 0.08) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 40% at 80% 70%, rgba(184, 149, 106, 0.06) 0%, transparent 50%);
-  pointer-events: none;
-  z-index: 0;
+/* 头部 */
+.header {
+  padding: 28px 20px 16px;
 }
-
-/* 顶部水墨横幅 */
-.hero {
-  position: relative;
-  z-index: 1;
-  height: 200px;
-  background: linear-gradient(180deg, 
-    rgba(90, 124, 90, 0.15) 0%, 
-    rgba(90, 124, 90, 0.05) 50%,
-    transparent 100%);
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  padding: 0 24px 20px;
-  margin-bottom: 8px;
-}
-.hero::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--stone), transparent);
-}
-.hero h1 {
+.header h1 {
   font-family: 'Ma Shan Zheng', cursive;
-  font-size: 42px;
+  font-size: 38px;
+  letter-spacing: 6px;
   color: var(--ink);
-  letter-spacing: 8px;
-  line-height: 1;
 }
-.hero .sub {
-  font-family: 'Noto Serif SC', serif;
+.header .sub {
   font-size: 12px;
-  color: var(--stone);
-  margin-top: 8px;
-  letter-spacing: 3px;
-}
-.hero .date {
-  font-size: 11px;
   color: var(--ochre);
+  margin-top: 6px;
+  letter-spacing: 2px;
+}
+.header .date {
+  font-size: 10px;
+  color: var(--moss);
   margin-top: 4px;
-  font-weight: 300;
 }
 
-/* 天气 - 题跋式 */
+/* 天气 */
 .weather {
-  position: relative;
-  z-index: 1;
-  margin: 0 20px 24px;
-  padding: 14px 0;
+  margin: 0 20px 20px;
+  padding: 10px 0;
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 14px;
+  border-bottom: 1px solid var(--mist);
 }
 .weather .temp-box {
   text-align: center;
-  padding-right: 16px;
+  padding-right: 14px;
   border-right: 1px solid var(--mist);
 }
 .weather .temp {
   font-family: 'Noto Serif SC', serif;
-  font-size: 32px;
+  font-size: 28px;
   font-weight: 700;
-  color: var(--ink-light);
+  color: var(--ink);
 }
 .weather .city {
   font-size: 10px;
   color: var(--stone);
-  margin-top: 2px;
-  letter-spacing: 1px;
 }
 .weather .hint {
   flex: 1;
-  font-size: 12px;
+  font-size: 11px;
   color: var(--ochre);
-  line-height: 1.7;
-  font-weight: 300;
+  line-height: 1.6;
 }
 
-/* 章节 - 卷轴式 */
+/* 章节标题 */
 .section {
-  position: relative;
-  z-index: 1;
-  margin: 28px 20px 16px;
   display: flex;
-  align-items: center;
-  gap: 12px;
+  align-items: baseline;
+  gap: 10px;
+  margin: 28px 20px 16px;
 }
 .section .zh {
   font-family: 'Ma Shan Zheng', cursive;
-  font-size: 22px;
+  font-size: 20px;
   color: var(--ink);
 }
-.section .count {
-  font-family: 'Noto Serif SC', serif;
-  font-size: 13px;
-  color: var(--cinnabar);
-  font-weight: 600;
+.section .en {
+  font-size: 10px;
+  color: var(--ochre);
 }
 .section .line {
   flex: 1;
@@ -150,178 +104,131 @@ body::before {
   background: linear-gradient(90deg, var(--mist), transparent);
 }
 
-/* 待办卡片 - 画卷展开式 */
-.scroll-card {
-  position: relative;
-  z-index: 1;
-  margin: 0 16px 16px;
+/* 待办轮播 */
+.todo-scroll {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 0 20px 8px;
+  scrollbar-width: none;
+}
+.todo-scroll::-webkit-scrollbar { display: none; }
+
+.todo-mini {
+  flex-shrink: 0;
+  width: 140px;
   background: var(--paper);
-  border-radius: 4px;
-  overflow: hidden;
-  box-shadow: 0 2px 16px var(--mist);
+  border-radius: 12px;
+  padding: 12px;
+  border: 1px solid #e8e4dc;
+  box-shadow: 0 2px 10px var(--mist);
 }
-.scroll-card .photo-area {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 16/10;
+.todo-mini .m-photo {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  margin: 0 auto 8px;
   overflow: hidden;
+  border: 2px solid #e8e4dc;
 }
-.scroll-card .photo-area img {
+.todo-mini .m-photo img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: saturate(0.9) contrast(1.05);
 }
-/* 水墨遮罩 */
-.scroll-card .photo-area::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 60%;
-  background: linear-gradient(180deg, transparent, var(--paper));
-}
-/* 植物名题签 */
-.scroll-card .photo-area .caption {
-  position: absolute;
-  bottom: 12px;
-  right: 16px;
-  z-index: 2;
+.todo-mini .m-name {
   font-family: 'Ma Shan Zheng', cursive;
-  font-size: 24px;
+  font-size: 16px;
+  text-align: center;
   color: var(--ink);
-  text-shadow: 0 1px 3px rgba(255,255,255,0.8);
 }
-.scroll-card .content {
-  padding: 16px 20px 20px;
-}
-.scroll-card .status-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 12px;
-}
-.scroll-card .latin {
+.todo-mini .m-status {
   font-size: 10px;
-  color: var(--stone);
-  font-style: italic;
-  font-family: 'Noto Serif SC', serif;
-}
-.scroll-card .status {
-  font-size: 12px;
+  text-align: center;
   color: var(--cinnabar);
-  font-weight: 500;
-  text-align: right;
+  margin-top: 3px;
 }
-.scroll-card .meta {
-  font-size: 11px;
-  color: var(--moss);
-  font-weight: 300;
-  margin-bottom: 16px;
-}
-.scroll-card .action {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-top: 14px;
-  border-top: 1px dashed rgba(26, 47, 26, 0.1);
-}
-.scroll-card .action .label {
-  font-size: 12px;
-  color: var(--ochre);
-  font-weight: 300;
-}
-/* 印章按钮 */
-.scroll-card .seal {
-  width: 48px;
-  height: 48px;
+.todo-mini .m-water {
+  width: 36px;
+  height: 36px;
   background: var(--cinnabar);
-  border-radius: 4px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
-  font-family: 'Ma Shan Zheng', cursive;
-  font-size: 20px;
+  font-size: 14px;
+  margin: 8px auto 0;
   cursor: pointer;
-  box-shadow: 0 3px 10px rgba(196, 92, 74, 0.3);
-  transition: all 0.3s;
-  position: relative;
-}
-.scroll-card .seal::before {
-  content: '';
-  position: absolute;
-  inset: 3px;
-  border: 1px solid rgba(255,255,255,0.3);
-  border-radius: 2px;
-}
-.scroll-card .seal:active {
-  transform: scale(0.92);
-  background: var(--stone);
 }
 
-/* 植物列表 - 扇面式 */
-.fan-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-  padding: 0 16px;
-  position: relative;
-  z-index: 1;
+/* 植物列表 */
+.plant-list {
+  padding: 0 20px;
 }
-.fan-item {
-  text-align: center;
-  padding: 16px 8px;
-  background: var(--paper);
-  border-radius: 4px;
-  box-shadow: 0 2px 10px var(--mist);
-  position: relative;
+.list-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--mist);
+  cursor: pointer;
 }
-.fan-item:nth-child(1) { transform: rotate(-1deg); }
-.fan-item:nth-child(2) { transform: rotate(0.5deg) translateY(-4px); }
-.fan-item:nth-child(3) { transform: rotate(1deg); }
-.fan-item:nth-child(4) { transform: rotate(-0.5deg); }
-.fan-item:nth-child(5) { transform: rotate(0.8deg) translateY(-4px); }
-.fan-item:nth-child(6) { transform: rotate(-1.2deg); }
-
-.fan-item .f-photo {
-  width: 72px;
-  height: 72px;
+.list-item:last-child {
+  border-bottom: none;
+}
+.list-item:active {
+  opacity: 0.7;
+}
+.list-thumb {
+  width: 56px;
+  height: 56px;
   border-radius: 50%;
-  margin: 0 auto 10px;
   overflow: hidden;
   border: 2px solid var(--mist);
-  box-shadow: 0 3px 10px var(--mist);
+  flex-shrink: 0;
 }
-.fan-item .f-photo img {
+.list-thumb img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
-.fan-item .f-name {
-  font-family: 'Ma Shan Zheng', cursive;
-  font-size: 16px;
+.list-info {
+  flex: 1;
+  min-width: 0;
+}
+.list-name {
+  font-size: 15px;
+  font-weight: 600;
   color: var(--ink);
 }
-.fan-item .f-cycle {
-  font-size: 10px;
-  color: var(--stone);
+.list-meta {
+  font-size: 11px;
+  color: var(--moss);
   margin-top: 3px;
-  font-weight: 300;
 }
-.fan-item .f-dot {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  width: 7px;
-  height: 7px;
-  background: var(--cinnabar);
-  border-radius: 50%;
-  box-shadow: 0 0 6px rgba(196, 92, 74, 0.4);
+.list-badge {
+  font-size: 9px;
+  padding: 3px 8px;
+  border-radius: 10px;
+  font-weight: 500;
+  flex-shrink: 0;
+}
+.list-badge.overdue {
+  background: #fff0f0;
+  color: var(--cinnabar);
+}
+.list-badge.due {
+  background: #fff8e7;
+  color: #b8956a;
+}
+.list-arrow {
+  font-size: 18px;
+  color: var(--ochre);
+  flex-shrink: 0;
 }
 
-/* 底部导航 - 竹简式 */
+/* 底部导航 */
 .nav {
   position: fixed;
   bottom: 0;
@@ -335,17 +242,14 @@ body::before {
   display: flex;
   justify-content: space-around;
   padding: 10px 0 24px;
-  z-index: 10;
 }
 .nav-item {
   text-align: center;
   font-size: 10px;
   color: var(--moss);
-  font-weight: 300;
-  letter-spacing: 1px;
 }
 .nav-item.active {
-  color: var(--ink-light);
+  color: var(--ink);
   font-weight: 500;
 }
 .nav-item .icon {
@@ -358,10 +262,10 @@ body::before {
 </head>
 <body>
 
-<div class="hero">
+<div class="header">
   <h1>青舍</h1>
-  <div class="sub">一花一世界 · 一叶一菩提</div>
-  <div class="date">乙巳年五月十一 · 广州南阳台</div>
+  <p class="sub">一花一世界 · 一叶一菩提</p>
+  <p class="date">乙巳年五月十一 · 广州南阳台</p>
 </div>
 
 <div class="weather">
@@ -369,96 +273,118 @@ body::before {
     <div class="temp">28°</div>
     <div class="city">广州 · 晴</div>
   </div>
-  <div class="hint">空气较干燥，观叶植物建议喷雾增湿。气温较高，注意遮阴。</div>
+  <div class="hint">空气较干燥，观叶植物建议喷雾增湿</div>
 </div>
 
+<!-- 待办轮播 -->
 <div class="section">
   <span class="zh">今日待办</span>
-  <span class="count">六株待浇</span>
+  <span class="en">TODAY · 6</span>
   <div class="line"></div>
 </div>
 
-<div class="scroll-card">
-  <div class="photo-area">
-    <img src="pics/蓝花楹.png" alt="蓝花楹">
-    <div class="caption">蓝花楹</div>
+<div class="todo-scroll">
+  <div class="todo-mini">
+    <div class="m-photo"><img src="pics-ai/蓝花楹.png" alt=""></div>
+    <div class="m-name">蓝花楹</div>
+    <div class="m-status">逾期15天</div>
+    <div class="m-water">水</div>
   </div>
-  <div class="content">
-    <div class="status-row">
-      <div class="latin">Jacaranda mimosifolia</div>
-      <div class="status">已逾期十五日<br>快渴坏了</div>
-    </div>
-    <div class="meta">浇透 · 二日周期 · 喜阳怕涝</div>
-    <div class="action">
-      <span class="label">点击浇水</span>
-      <div class="seal">水</div>
-    </div>
+  <div class="todo-mini">
+    <div class="m-photo"><img src="pics-ai/红掌.png" alt=""></div>
+    <div class="m-name">红掌</div>
+    <div class="m-status">逾期15天</div>
+    <div class="m-water">水</div>
+  </div>
+  <div class="todo-mini">
+    <div class="m-photo"><img src="pics-ai/洋凤仙.png" alt=""></div>
+    <div class="m-name">洋凤仙</div>
+    <div class="m-status">逾期15天</div>
+    <div class="m-water">水</div>
+  </div>
+  <div class="todo-mini">
+    <div class="m-photo"><img src="pics-ai/百合竹.png" alt=""></div>
+    <div class="m-name">百合竹</div>
+    <div class="m-status">逾期15天</div>
+    <div class="m-water">水</div>
+  </div>
+  <div class="todo-mini">
+    <div class="m-photo"><img src="pics-ai/长寿花.png" alt=""></div>
+    <div class="m-name">长寿花</div>
+    <div class="m-status">逾期15天</div>
+    <div class="m-water">水</div>
+  </div>
+  <div class="todo-mini">
+    <div class="m-photo"><img src="pics-ai/黑叶芋.png" alt=""></div>
+    <div class="m-name">黑叶芋</div>
+    <div class="m-status">逾期15天</div>
+    <div class="m-water">水</div>
   </div>
 </div>
 
-<div class="scroll-card">
-  <div class="photo-area">
-    <img src="pics/红掌.png" alt="红掌">
-    <div class="caption">红掌</div>
-  </div>
-  <div class="content">
-    <div class="status-row">
-      <div class="latin">Anthurium andraeanum</div>
-      <div class="status">已逾期十五日<br>叶片微卷</div>
-    </div>
-    <div class="meta">保持湿润 · 三日周期 · 喜湿耐阴</div>
-    <div class="action">
-      <span class="label">点击浇水</span>
-      <div class="seal">水</div>
-    </div>
-  </div>
-</div>
-
+<!-- 植物列表 -->
 <div class="section">
   <span class="zh">我的植物</span>
-  <span class="count">六株</span>
+  <span class="en">COLLECTION · 6</span>
   <div class="line"></div>
 </div>
 
-<div class="fan-grid">
-  <div class="fan-item">
-    <div class="f-dot"></div>
-    <div class="f-photo"><img src="pics/蓝花楹.png" alt=""></div>
-    <div class="f-name">蓝花楹</div>
-    <div class="f-cycle">二日周期</div>
+<div class="plant-list">
+  <div class="list-item">
+    <div class="list-thumb"><img src="pics-ai/蓝花楹.png" alt=""></div>
+    <div class="list-info">
+      <div class="list-name">蓝花楹</div>
+      <div class="list-meta">浇透 · 2天周期 · 喜阳怕涝</div>
+    </div>
+    <div class="list-badge overdue">逾期15天</div>
+    <div class="list-arrow">›</div>
   </div>
-  <div class="fan-item">
-    <div class="f-photo"><img src="pics/长寿花.png" alt=""></div>
-    <div class="f-name">长寿花</div>
-    <div class="f-cycle">十日周期</div>
+  <div class="list-item">
+    <div class="list-thumb"><img src="pics-ai/红掌.png" alt=""></div>
+    <div class="list-info">
+      <div class="list-name">红掌</div>
+      <div class="list-meta">保持湿润 · 3天周期 · 喜湿耐阴</div>
+    </div>
+    <div class="list-badge overdue">逾期15天</div>
+    <div class="list-arrow">›</div>
   </div>
-  <div class="fan-item">
-    <div class="f-dot"></div>
-    <div class="f-photo"><img src="pics/百合竹.png" alt=""></div>
-    <div class="f-name">百合竹</div>
-    <div class="f-cycle">六日周期</div>
+  <div class="list-item">
+    <div class="list-thumb"><img src="pics-ai/洋凤仙.png" alt=""></div>
+    <div class="list-info">
+      <div class="list-name">洋凤仙</div>
+      <div class="list-meta">充足 · 每天浇水 · 喜水喜半阴</div>
+    </div>
+    <div class="list-badge due">今日</div>
+    <div class="list-arrow">›</div>
   </div>
-  <div class="fan-item">
-    <div class="f-dot"></div>
-    <div class="f-photo"><img src="pics/红掌.png" alt=""></div>
-    <div class="f-name">红掌</div>
-    <div class="f-cycle">三日周期</div>
+  <div class="list-item">
+    <div class="list-thumb"><img src="pics-ai/百合竹.png" alt=""></div>
+    <div class="list-info">
+      <div class="list-name">百合竹</div>
+      <div class="list-meta">适量 · 6天周期 · 耐阴常绿</div>
+    </div>
+    <div class="list-arrow">›</div>
   </div>
-  <div class="fan-item">
-    <div class="f-dot"></div>
-    <div class="f-photo"><img src="pics/洋凤仙.png" alt=""></div>
-    <div class="f-name">洋凤仙</div>
-    <div class="f-cycle">每日浇水</div>
+  <div class="list-item">
+    <div class="list-thumb"><img src="pics-ai/长寿花.png" alt=""></div>
+    <div class="list-info">
+      <div class="list-name">长寿花</div>
+      <div class="list-meta">少量 · 10天周期 · 耐旱喜光</div>
+    </div>
+    <div class="list-arrow">›</div>
   </div>
-  <div class="fan-item">
-    <div class="f-dot"></div>
-    <div class="f-photo"><img src="pics/黑叶芋.png" alt=""></div>
-    <div class="f-name">黑叶芋</div>
-    <div class="f-cycle">四日周期</div>
+  <div class="list-item">
+    <div class="list-thumb"><img src="pics-ai/黑叶芋.png" alt=""></div>
+    <div class="list-info">
+      <div class="list-name">黑叶芋</div>
+      <div class="list-meta">保持湿润 · 4天周期 · 喜阴喜湿</div>
+    </div>
+    <div class="list-badge overdue">逾期15天</div>
+    <div class="list-arrow">›</div>
   </div>
 </div>
 
-<div style="height: 100px;"></div>
+<div style="height: 80px;"></div>
 
 <div class="nav">
   <div class="nav-item active">
