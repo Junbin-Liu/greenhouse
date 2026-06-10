@@ -102,11 +102,6 @@ export default function HomePage({ store }) {
     }
   }
 
-  // 按花架分层
-  const topPlant = plants.find(p => p.info?.shelf === 'top')
-  const midPlant = plants.find(p => p.info?.shelf === 'mid')
-  const bottomPlants = plants.filter(p => p.info?.shelf === 'bottom')
-
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -207,77 +202,46 @@ export default function HomePage({ store }) {
         )}
       </AnimatePresence>
 
-      {/* 花架 */}
-      <div className="px-4 mb-6">
-        <div className="flex items-baseline gap-2 mb-4 px-1">
+      {/* 我的植物 - 列表 */}
+      <div className="px-5 mb-6">
+        <div className="flex items-baseline gap-2 mb-4">
           <span className="text-lg text-[#1a2f1a]" style={{ fontFamily: "'Ma Shan Zheng', cursive" }}>
-            我的花架
+            我的植物
           </span>
+          <span className="text-[10px] text-[#7a9a7a]">共{plants.length}株</span>
           <div className="flex-1 h-px bg-gradient-to-r from-[#e8e4dc] to-transparent" />
         </div>
 
-        <div className="bg-gradient-to-b from-[rgba(139,105,20,0.04)] to-[rgba(139,105,20,0.02)] rounded-lg p-4 border border-[rgba(139,105,20,0.08)] relative">
-          {/* 层板线 */}
-          <div className="absolute left-3 right-3 h-px bg-gradient-to-r from-transparent via-[#c4a77d] to-transparent" style={{ top: '38%' }} />
-          <div className="absolute left-3 right-3 h-px bg-gradient-to-r from-transparent via-[#c4a77d] to-transparent" style={{ bottom: '32%' }} />
-
-          <div className="flex flex-col items-center gap-0 relative">
-            {/* 顶层 - 百合竹 */}
-            {topPlant && (
-              <div className="relative z-10 mb-[-12px]">
-                <motion.div
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => setModalPlant(topPlant)}
-                  className="w-[150px] h-[150px] rounded-full overflow-hidden border-[3px] border-[#c4a77d] shadow-lg shadow-[rgba(139,105,20,0.15)] cursor-pointer bg-[#faf8f4]"
-                >
-                  <img src={topPlant.info?.image} alt={topPlant.nickname} className="w-full h-full object-cover" />
-                </motion.div>
-                <div className="text-center mt-2">
-                  <p className="text-base text-[#1a2f1a] font-medium">{topPlant.nickname}</p>
-                  <p className="text-[10px] text-[#7a9a7a]">约1.2米</p>
-                </div>
+        <div className="space-y-3">
+          {plants.map((plant, i) => (
+            <motion.div
+              key={plant.id}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.06 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={() => setModalPlant(plant)}
+              className="flex items-center gap-4 bg-[#faf8f4] rounded-xl p-3 border border-[#e8e4dc] shadow-sm cursor-pointer"
+            >
+              <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-[#e8e4dc] shrink-0">
+                <img src={plant.info?.image} alt={plant.nickname} className="w-full h-full object-cover" />
               </div>
-            )}
-
-            {/* 中层 - 蓝花楹 */}
-            {midPlant && (
-              <div className="relative z-[5] mb-[-8px]">
-                <motion.div
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => setModalPlant(midPlant)}
-                  className="w-[120px] h-[120px] rounded-full overflow-hidden border-[2px] border-[#c4a77d] shadow-md shadow-[rgba(139,105,20,0.12)] cursor-pointer bg-[#faf8f4]"
-                >
-                  <img src={midPlant.info?.image} alt={midPlant.nickname} className="w-full h-full object-cover" />
-                </motion.div>
-                <div className="text-center mt-1.5">
-                  <p className="text-sm text-[#1a2f1a] font-medium">{midPlant.nickname}</p>
-                  <p className="text-[10px] text-[#7a9a7a]">约0.6米</p>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2">
+                  <h3 className="font-medium text-[#1a2f1a]">{plant.nickname}</h3>
+                  {(plant.status === 'overdue' || plant.status === 'due') && (
+                    <span className="text-[9px] px-1.5 py-0.5 rounded-full bg-red-50 text-red-500 font-medium">
+                      {plant.status === 'overdue' ? `逾期${Math.abs(plant.dueDays)}天` : '今日'}
+                    </span>
+                  )}
                 </div>
+                <p className="text-[11px] text-[#7a9a7a] mt-0.5">
+                  {plant.info?.waterAmount} · {plant.info?.waterInterval}天周期
+                </p>
               </div>
-            )}
-
-            {/* 底层 - 4小盆 */}
-            <div className="flex justify-center gap-3 pt-3 relative z-[1]">
-              {bottomPlants.map(plant => (
-                <div key={plant.id} className="text-center relative">
-                  <motion.div
-                    whileTap={{ scale: 0.92 }}
-                    onClick={() => setModalPlant(plant)}
-                    className="w-[72px] h-[72px] rounded-full overflow-hidden border-[2px] border-[#c4a77d] shadow-sm cursor-pointer bg-[#faf8f4] relative"
-                  >
-                    <img src={plant.info?.image} alt={plant.nickname} className="w-full h-full object-cover" />
-                    {(plant.status === 'overdue' || plant.status === 'due') && (
-                      <div className="absolute -top-1 -right-1 w-5 h-5 bg-[#c45c4a] rounded-full flex items-center justify-center text-white text-[9px] shadow-md">
-                        !
-                      </div>
-                    )}
-                  </motion.div>
-                  <p className="text-xs text-[#1a2f1a] mt-1.5">{plant.nickname}</p>
-                  <p className="text-[9px] text-[#7a9a7a]">约0.3米</p>
-                </div>
-              ))}
-            </div>
-          </div>
+              <div className="text-[#c4a77d] text-lg">›</div>
+            </motion.div>
+          ))}
         </div>
       </div>
 

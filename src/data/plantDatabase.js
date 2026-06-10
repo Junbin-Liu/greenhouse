@@ -13,8 +13,6 @@ export const PLANT_DATABASE = [
     description: '蓝花楹花开时如梦似幻，广州夏季需保持土壤湿润但忌积水，南阳台3-4小时直射刚好。',
     tips: ['花期春末夏初', '冬季减少浇水', '喜酸性土壤'],
     image: '/greenhouse/plants/蓝花楹.jpg',
-    height: 0.6,
-    shelf: 'mid',
   },
   {
     id: 'kalanchoe',
@@ -30,8 +28,6 @@ export const PLANT_DATABASE = [
     description: '肉质叶片储水能力强，宁干勿湿，花期长达数月。',
     tips: ['花期冬春季', '忌积水烂根', '花后修剪促分枝'],
     image: '/greenhouse/plants/长寿花.jpg',
-    height: 0.3,
-    shelf: 'bottom',
   },
   {
     id: 'dracaena-reflexa',
@@ -47,8 +43,6 @@ export const PLANT_DATABASE = [
     description: '叶片金黄相间，优雅挺拔，适合室内观赏。',
     tips: ['保持土壤微湿', '经常喷雾增湿', '避免强光直射'],
     image: '/greenhouse/plants/百合竹.jpg',
-    height: 1.2,
-    shelf: 'top',
   },
   {
     id: 'anthurium',
@@ -64,8 +58,6 @@ export const PLANT_DATABASE = [
     description: '佛焰苞鲜艳夺目，喜高温高湿环境，广州气候很适合，需经常喷雾保持湿度。',
     tips: ['保持土壤湿润', '经常叶面喷雾', '忌强光暴晒'],
     image: '/greenhouse/plants/红掌.jpg',
-    height: 0.3,
-    shelf: 'bottom',
   },
   {
     id: 'impatiens',
@@ -81,8 +73,6 @@ export const PLANT_DATABASE = [
     description: '花朵繁密色彩丰富，生长迅速，广州夏季几乎每天都需要补水，但切忌积水烂根。',
     tips: ['保持土壤湿润', '避免正午暴晒', '及时摘除残花'],
     image: '/greenhouse/plants/洋凤仙.jpg',
-    height: 0.3,
-    shelf: 'bottom',
   },
   {
     id: 'alocasia',
@@ -98,8 +88,6 @@ export const PLANT_DATABASE = [
     description: '叶片墨绿带银脉，极具热带风情，对湿度要求较高。',
     tips: ['保持高湿度', '土壤不可干透', '冬季注意保暖'],
     image: '/greenhouse/plants/黑叶芋.jpg',
-    height: 0.3,
-    shelf: 'bottom',
   },
 ];
 
